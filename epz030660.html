@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel — Pardo Zarabozo</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:       #F7F5F1;
+      --surface:  #FFFFFF;
+      --ink:      #0D1B2A;
+      --muted:    #7A8694;
+      --rule:     #E2DDD8;
+      --amber:    #B8912A;
+      --red:      #C0392B;
+      --green:    #1A6B3C;
+      --nav-bg:   #0D1B2A;
+      --tb-bg:    #F2EFE9;
+      --ff-d: 'Playfair Display', Georgia, serif;
+      --ff-b: 'Inter', system-ui, sans-serif;
+      --r: 6px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:      #0F1923;
+        --surface: #162030;
+        --ink:     #E8E2D9;
+        --muted:   #8A95A0;
+        --rule:    #1F2D3D;
+        --amber:   #C9A84C;
+        --red:     #e07070;
+        --green:   #5cb882;
+        --nav-bg:  #060f18;
+        --tb-bg:   #111c28;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { color-scheme: light dark; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--ff-b); font-size: .93rem; line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LOGIN ───────────────────────────────────────────────────── */
+    #screen-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+    .login-card { width: 100%; max-width: 340px; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: 2.5rem 2rem; }
+    .login-logo { font-family: var(--ff-d); font-size: 1.3rem; font-weight: 700; margin-bottom: .3rem; }
+    .login-sub  { font-size: .78rem; color: var(--muted); margin-bottom: 2rem; }
+    .f-label { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); margin-bottom: .45rem; }
+    .f-input {
+      width: 100%; border: 1.5px solid var(--rule); background: var(--bg);
+      padding: .65rem .85rem; font-family: var(--ff-b); font-size: .9rem;
+      color: var(--ink); outline: none; transition: border-color .18s;
+      border-radius: var(--r); margin-bottom: .75rem;
+    }
+    .f-input:focus { border-color: var(--amber); }
+    .login-err { font-size: .78rem; color: var(--red); margin-bottom: .9rem; display: none; }
+
+    /* ── BUTTONS ─────────────────────────────────────────────────── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: .62rem 1.2rem; font-family: var(--ff-b); font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; cursor: pointer; border: none; border-radius: var(--r); transition: opacity .18s, background .18s; }
+    .btn:hover   { opacity: .85; }
+    .btn:disabled{ opacity: .4; cursor: not-allowed; }
+    .btn-primary { background: var(--ink); color: var(--bg); width: 100%; }
+    .btn-amber   { background: var(--amber); color: #fff; }
+    .btn-ghost   { background: none; border: 1.5px solid var(--rule); color: var(--muted); }
+    .btn-danger  { background: none; border: 1.5px solid var(--red); color: var(--red); }
+    .btn-sm      { padding: .38rem .75rem; font-size: .68rem; }
+    .btn-icon    { padding: .38rem .5rem; min-width: 30px; background: none; border: 1px solid var(--rule); color: var(--ink); cursor: pointer; font-family: var(--ff-b); font-size: .8rem; border-radius: 4px; transition: background .12s, border-color .12s; display: inline-flex; align-items: center; justify-content: center; height: 28px; }
+    .btn-icon:hover { background: var(--surface); border-color: var(--amber); }
+
+    /* ── PANEL ───────────────────────────────────────────────────── */
+    #screen-panel { display: none; }
+    .p-nav {
+      background: var(--nav-bg); color: #E8E2D9;
+      padding: 0 1.75rem; height: 50px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .p-nav-logo { font-family: var(--ff-d); font-size: .95rem; font-weight: 700; display: flex; align-items: center; gap: .6rem; }
+    .p-nav-badge { font-family: var(--ff-b); font-size: .62rem; font-weight: 500; background: rgba(255,255,255,.1); padding: .2rem .5rem; border-radius: 3px; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+    .p-nav-right { display: flex; align-items: center; gap: 1rem; }
+    .p-nav-link  { font-size: .72rem; color: rgba(232,226,217,.55); transition: color .2s; }
+    .p-nav-link:hover { color: #E8E2D9; }
+    .p-nav-btn   { background: none; border: 1px solid rgba(255,255,255,.15); color: rgba(232,226,217,.65); font-family: var(--ff-b); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; padding: .28rem .65rem; cursor: pointer; border-radius: 4px; transition: all .18s; }
+    .p-nav-btn:hover { border-color: rgba(255,255,255,.5); color: #E8E2D9; }
+
+    .p-body { max-width: 980px; margin-inline: auto; padding: 2rem 1.5rem; }
+
+    /* ── SIDEBAR TABS ────────────────────────────────────────────── */
+    .p-tabs { display: flex; gap: .25rem; margin-bottom: 2rem; border-bottom: 1px solid var(--rule); padding-bottom: 0; }
+    .p-tab  { padding: .5rem 1rem; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border: none; background: none; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; font-family: var(--ff-b); transition: color .15s, border-color .15s; border-radius: 0; }
+    .p-tab:hover  { color: var(--ink); }
+    .p-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+    /* ── LIST VIEW ───────────────────────────────────────────────── */
+    .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.75rem; flex-wrap: wrap; gap: 1rem; }
+    .list-header h1 { font-family: var(--ff-d); font-size: 1.4rem; font-weight: 700; }
+    .post-table { width: 100%; border-collapse: collapse; }
+    .post-table th { text-align: left; font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1.5px solid var(--rule); padding: .55rem .75rem; }
+    .post-table td { padding: .85rem .75rem; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+    .post-table tr:last-child td { border-bottom: none; }
+    .post-table tr:hover td { background: rgba(184,145,42,.04); }
+    .td-title { font-weight: 500; font-size: .9rem; }
+    .td-cat   { font-size: .68rem; color: var(--amber); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+    .td-date  { font-size: .75rem; color: var(--muted); white-space: nowrap; }
+    .empty-panel { text-align: center; padding: 4rem 2rem; color: var(--muted); border: 1.5px dashed var(--rule); border-radius: var(--r); }
+    .empty-panel p { font-size: .88rem; }
+
+    /* ── EDITOR ──────────────────────────────────────────────────── */
+    #view-editor { display: none; }
+    .ed-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
+    .ed-header h1 { font-family: var(--ff-d); font-size: 1.35rem; font-weight: 700; flex: 1; }
+    .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .fg { display: flex; flex-direction: column; gap: .35rem; }
+    .fg label { font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .fg input, .fg textarea {
+      border: 1.5px solid var(--rule); background: var(--surface);
+      padding: .6rem .8rem; font-family: var(--ff-b); font-size: .88rem;
+      color: var(--ink); outline: none; transition: border-color .18s;
+      border-radius: var(--r); width: 100%;
+    }
+    .fg input:focus, .fg textarea:focus { border-color: var(--amber); }
+    .fg textarea { resize: vertical; min-height: 72px; }
+
+    /* ── LANG SWITCH ─────────────────────────────────────────────── */
+    .lang-switch { display: flex; gap: 0; margin-bottom: 0; border-bottom: 1px solid var(--rule); }
+    .ls-tab { padding: .5rem 1.1rem; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border: none; background: none; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; font-family: var(--ff-b); transition: color .15s, border-color .15s; }
+    .ls-tab:hover  { color: var(--ink); }
+    .ls-tab.active { color: var(--ink); border-bottom-color: var(--amber); }
+    .lang-panel { display: none; }
+    .lang-panel.active { display: block; }
+
+    /* ── TOOLBAR / RIBBON ────────────────────────────────────────── */
+    .toolbar-wrap { border: 1.5px solid var(--rule); border-bottom: none; border-radius: var(--r) var(--r) 0 0; background: var(--tb-bg); overflow: hidden; }
+    .tb-tabs { display: flex; border-bottom: 1px solid var(--rule); padding: 0 .5rem; }
+    .tb-tab  { padding: .38rem .8rem; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border: none; background: none; color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px; font-family: var(--ff-b); transition: color .15s, border-color .15s; }
+    .tb-tab:hover  { color: var(--ink); }
+    .tb-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+    .tb-body { display: none; flex-wrap: wrap; align-items: flex-end; gap: .6rem; padding: .65rem .75rem .7rem; }
+    .tb-body.active { display: flex; }
+    .tb-group { display: flex; flex-direction: column; gap: .3rem; padding-right: .85rem; border-right: 1px solid var(--rule); }
+    .tb-group:last-child { border-right: none; padding-right: 0; }
+    .tb-gl { font-size: .58rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .tb-row { display: flex; gap: .22rem; align-items: center; }
+    .tb-select {
+      padding: .28rem .4rem; font-size: .78rem; font-family: var(--ff-b);
+      border: 1px solid var(--rule); background: var(--surface);
+      color: var(--ink); cursor: pointer; outline: none;
+      height: 28px; border-radius: 4px; transition: border-color .15s;
+    }
+    .tb-select:focus { border-color: var(--amber); }
+    .tb-select.w-lg { min-width: 148px; }
+    .tb-select.w-sm { min-width: 68px; }
+
+    /* ── RICH EDITOR ─────────────────────────────────────────────── */
+    .rich-editor {
+      border: 1.5px solid var(--rule); border-top: none;
+      background: var(--surface);
+      min-height: 420px; padding: 1.5rem 1.75rem;
+      outline: none; font-family: var(--ff-b);
+      font-size: .95rem; line-height: 1.85; color: var(--ink);
+    }
+    .rich-editor:focus { border-color: var(--amber); }
+    .rich-editor h2 { font-family: var(--ff-d); font-size: 1.3rem; margin-block: 1rem .5rem; }
+    .rich-editor h3 { font-family: var(--ff-d); font-size: 1.1rem; margin-block: .75rem .4rem; }
+    .rich-editor blockquote { border-left: 3px solid var(--amber); padding-left: 1rem; margin-block: 1rem; color: var(--muted); font-style: italic; }
+    .rich-editor pre { background: var(--tb-bg); border: 1px solid var(--rule); padding: .75rem 1rem; font-family: 'Courier New', monospace; font-size: .85rem; margin-block: 1rem; border-radius: 4px; overflow-x: auto; }
+    .rich-editor table { border-collapse: collapse; width: 100%; margin-block: 1rem; }
+    .rich-editor th, .rich-editor td { border: 1px solid var(--rule); padding: .4rem .6rem; font-size: .88rem; }
+    .rich-editor th { background: var(--tb-bg); font-weight: 600; }
+    .rich-editor img { max-width: 100%; margin-block: .75rem; border-radius: 3px; }
+    .rich-editor ul, .rich-editor ol { padding-left: 1.5rem; margin-block: .6rem; }
+    .rich-editor li { margin-bottom: .2rem; }
+    .rich-editor .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-block: 1rem; border-radius: 4px; }
+    .rich-editor .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .rich-editor hr { border: none; border-top: 1px solid var(--rule); margin-block: 1.5rem; }
+
+    /* ── STATUS BAR ──────────────────────────────────────────────── */
+    .statusbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .28rem .75rem; font-size: .68rem; color: var(--muted);
+      border: 1.5px solid var(--rule); border-top: none;
+      border-radius: 0 0 var(--r) var(--r); background: var(--tb-bg);
+    }
+
+    /* ── MEDIA INPUT ─────────────────────────────────────────────── */
+    .media-row { display: none; gap: .5rem; flex-wrap: wrap; margin-top: .6rem; }
+    .media-input { flex: 1; min-width: 200px; border: 1.5px solid var(--rule); background: var(--surface); padding: .5rem .75rem; font-family: var(--ff-b); font-size: .85rem; color: var(--ink); outline: none; border-radius: var(--r); transition: border-color .18s; }
+    .media-input:focus { border-color: var(--amber); }
+
+    /* ── EDITOR FOOTER ───────────────────────────────────────────── */
+    .ed-actions { display: flex; justify-content: flex-end; gap: .65rem; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); flex-wrap: wrap; align-items: center; }
+    .ed-actions-left { margin-right: auto; }
+
+    /* ── CONFIG ──────────────────────────────────────────────────── */
+    #view-config { display: none; }
+    .cfg-card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r); padding: 1.75rem; margin-bottom: 1.25rem; }
+    .cfg-card h2 { font-family: var(--ff-d); font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--rule); }
+    .cfg-note { font-size: .75rem; color: var(--muted); margin-top: .4rem; line-height: 1.5; }
+    .cfg-row { margin-bottom: 1rem; }
+    .cfg-alert { background: rgba(184,145,42,.08); border: 1px solid rgba(184,145,42,.25); border-radius: var(--r); padding: .75rem 1rem; font-size: .8rem; color: var(--ink); margin-bottom: 1.25rem; line-height: 1.55; }
+    .cfg-alert strong { color: var(--amber); }
+
+    /* ── TOAST ───────────────────────────────────────────────────── */
+    #toast { position: fixed; bottom: 1.75rem; right: 1.75rem; padding: .7rem 1.1rem; font-size: .8rem; border-radius: var(--r); opacity: 0; transform: translateY(6px); transition: opacity .22s, transform .22s; pointer-events: none; z-index: 999; max-width: 300px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+    #toast.show    { opacity: 1; transform: translateY(0); }
+    #toast.error   { background: var(--red);   color: #fff; }
+    #toast.success { background: var(--green); color: #fff; }
+    #toast.info    { background: var(--ink);   color: var(--bg); }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .meta-grid { grid-template-columns: 1fr; }
+      .post-table .td-cat, .post-table .td-date { display: none; }
+      .p-body { padding: 1.25rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="screen-login">
+  <div class="login-card">
+    <p class="login-logo">Pardo Zarabozo</p>
+    <p class="login-sub">Panel de administración</p>
+    <label class="f-label" for="inp-pass">Contraseña</label>
+    <input class="f-input" type="password" id="inp-pass" placeholder="••••••••••" autocomplete="current-password" />
+    <p class="login-err" id="login-err">Contraseña incorrecta.</p>
+    <button class="btn btn-primary" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="screen-panel">
+
+  <nav class="p-nav">
+    <div class="p-nav-logo">
+      Pardo Zarabozo
+      <span class="p-nav-badge">Admin</span>
+    </div>
+    <div class="p-nav-right">
+      <a class="p-nav-link" href="/" target="_blank">Ver web ↗</a>
+      <button class="p-nav-btn" onclick="doLogout()">Salir</button>
+    </div>
+  </nav>
+
+  <div class="p-body">
+    <div class="p-tabs">
+      <button class="p-tab active" onclick="showView('list',this)">Publicaciones</button>
+      <button class="p-tab"        onclick="showView('config',this)">Configuración</button>
+    </div>
+
+    <!-- LISTA -->
+    <div id="view-list">
+      <div class="list-header">
+        <h1>Publicaciones</h1>
+        <button class="btn btn-amber" onclick="openEditor(null)">+ Nueva</button>
+      </div>
+      <div id="posts-table-wrap"></div>
+    </div>
+
+    <!-- EDITOR -->
+    <div id="view-editor">
+      <div class="ed-header">
+        <button class="btn btn-ghost btn-sm" onclick="showView('list')">← Volver</button>
+        <h1 id="ed-title-lbl">Nueva publicación</h1>
+      </div>
+
+      <!-- Metadatos -->
+      <div class="meta-grid">
+        <div class="fg"><label>Categoría (ES)</label><input type="text" id="f-cat-es" placeholder="Valoración, Macro…" /></div>
+        <div class="fg"><label>Categoría (EN)</label><input type="text" id="f-cat-en" placeholder="Valuation, Macro…" /></div>
+        <div class="fg"><label>Título (ES)</label><input type="text" id="f-title-es" placeholder="Título del análisis" /></div>
+        <div class="fg"><label>Título (EN)</label><input type="text" id="f-title-en" placeholder="Analysis title" /></div>
+        <div class="fg"><label>Resumen (ES)</label><textarea id="f-excerpt-es" placeholder="2-3 líneas en español"></textarea></div>
+        <div class="fg"><label>Resumen (EN)</label><textarea id="f-excerpt-en" placeholder="2-3 lines in English"></textarea></div>
+        <div class="fg"><label>Fecha (ES)</label><input type="text" id="f-date-es" placeholder="Junio 2026" /></div>
+        <div class="fg"><label>Fecha (EN)</label><input type="text" id="f-date-en" placeholder="June 2026" /></div>
+      </div>
+
+      <!-- Tabs ES / EN -->
+      <div class="lang-switch">
+        <button class="ls-tab active" onclick="switchLang('es',this)">Español</button>
+        <button class="ls-tab"        onclick="switchLang('en',this)">English</button>
+      </div>
+
+      <!-- ES -->
+      <div id="lp-es" class="lang-panel active">
+        <div class="toolbar-wrap">
+          <div class="tb-tabs">
+            <button class="tb-tab active" onclick="switchTb('es','inicio',this)">Inicio</button>
+            <button class="tb-tab"        onclick="switchTb('es','insertar',this)">Insertar</button>
+            <button class="tb-tab"        onclick="switchTb('es','formato',this)">Formato</button>
+          </div>
+
+          <!-- Inicio ES -->
+          <div class="tb-body active" id="tb-es-inicio">
+            <div class="tb-group">
+              <div class="tb-gl">Fuente</div>
+              <div class="tb-row">
+                <select class="tb-select w-lg" onchange="setFont(this.value);this.value=''">
+                  <option value="">Fuente…</option>
+                  <optgroup label="— Sin serifa">
+                    <option value="Inter,system-ui,sans-serif">Inter</option>
+                    <option value="Arial,sans-serif">Arial</option>
+                    <option value="'Helvetica Neue',sans-serif">Helvetica</option>
+                    <option value="Verdana,sans-serif">Verdana</option>
+                    <option value="Tahoma,sans-serif">Tahoma</option>
+                    <option value="Calibri,sans-serif">Calibri</option>
+                    <option value="'Gill Sans',sans-serif">Gill Sans</option>
+                    <option value="'Trebuchet MS',sans-serif">Trebuchet</option>
+                    <option value="Optima,sans-serif">Optima</option>
+                    <option value="Futura,sans-serif">Futura</option>
+                  </optgroup>
+                  <optgroup label="— Con serifa">
+                    <option value="'Playfair Display',Georgia,serif">Playfair Display</option>
+                    <option value="Georgia,serif">Georgia</option>
+                    <option value="'Times New Roman',serif">Times New Roman</option>
+                    <option value="Garamond,serif">Garamond</option>
+                    <option value="'Book Antiqua',Palatino,serif">Book Antiqua</option>
+                    <option value="'Palatino Linotype',serif">Palatino</option>
+                    <option value="'Century Schoolbook',serif">Century Schoolbook</option>
+                  </optgroup>
+                  <optgroup label="— Monoespaciada">
+                    <option value="'Courier New',monospace">Courier New</option>
+                    <option value="'Lucida Console',monospace">Lucida Console</option>
+                    <option value="'Consolas',monospace">Consolas</option>
+                  </optgroup>
+                </select>
+                <select class="tb-select w-sm" onchange="setSize(this.value);this.value=''">
+                  <option value="">Tam.</option>
+                  <option value="1">8</option>
+                  <option value="2">10</option>
+                  <option value="3">12</option>
+                  <option value="4">14</option>
+                  <option value="5">18</option>
+                  <option value="6">24</option>
+                  <option value="7">36</option>
+                </select>
+              </div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('bold')"          title="Negrita"><b>N</b></button>
+                <button class="btn-icon" onclick="fmt('italic')"        title="Cursiva"><i>K</i></button>
+                <button class="btn-icon" onclick="fmt('underline')"     title="Subrayado"><u>S</u></button>
+                <button class="btn-icon" onclick="fmt('strikeThrough')" title="Tachado"><s>T</s></button>
+                <button class="btn-icon" onclick="fmtAmber()"           title="Color ámbar" style="color:var(--amber);font-weight:700;border-bottom:2px solid var(--amber);">A</button>
+                <button class="btn-icon" onclick="fmt('removeFormat')"  title="Limpiar formato" style="font-size:.65rem;letter-spacing:-.02em;">✕ fmt</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Párrafo</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('insertUnorderedList')" title="Lista">&#8226;</button>
+                <button class="btn-icon" onclick="fmt('insertOrderedList')"   title="Numerada">1.</button>
+                <button class="btn-icon" onclick="fmt('indent')"              title="Sangría +">&#8677;</button>
+                <button class="btn-icon" onclick="fmt('outdent')"             title="Sangría −">&#8676;</button>
+              </div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('justifyLeft')"   title="Izquierda">&#8676;&#9646;</button>
+                <button class="btn-icon" onclick="fmt('justifyCenter')" title="Centrar">&#9644;</button>
+                <button class="btn-icon" onclick="fmt('justifyRight')"  title="Derecha">&#9646;&#8677;</button>
+                <button class="btn-icon" onclick="fmt('justifyFull')"   title="Justificar">&#9644;&#9644;</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Estilo</div>
+              <div class="tb-row">
+                <select class="tb-select w-lg" onchange="setBlock(this.value,'es');this.value=''">
+                  <option value="">Estilo…</option>
+                  <option value="p">Párrafo</option>
+                  <option value="h2">Título H2</option>
+                  <option value="h3">Subtítulo H3</option>
+                  <option value="blockquote">Cita destacada</option>
+                  <option value="pre">Código / preformato</option>
+                </select>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Historial</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('undo')" title="Deshacer">&#8630;</button>
+                <button class="btn-icon" onclick="fmt('redo')" title="Rehacer">&#8631;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Insertar ES -->
+          <div class="tb-body" id="tb-es-insertar">
+            <div class="tb-group">
+              <div class="tb-gl">Tabla</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="doTable('es')" title="Insertar tabla" style="min-width:54px;gap:.3rem;">&#8862; Tabla</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Multimedia</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="showMedia('img','es')"  style="min-width:44px;gap:.25rem;">🖼 Img</button>
+                <button class="btn-icon" onclick="showMedia('yt','es')"   style="min-width:40px;gap:.25rem;">▶ YT</button>
+                <button class="btn-icon" onclick="showMedia('vid','es')"  style="min-width:44px;gap:.25rem;">🎬 Vid</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Enlace</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="showMedia('link','es')" style="min-width:60px;gap:.25rem;">🔗 Enlace</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Separador</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="doHR('es')" style="min-width:60px;">&#8213; Línea</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formato ES -->
+          <div class="tb-body" id="tb-es-formato">
+            <div class="tb-group">
+              <div class="tb-gl">Posición</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('superscript')" title="Superíndice">x²</button>
+                <button class="btn-icon" onclick="fmt('subscript')"   title="Subíndice">x₂</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Mayúsculas</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="caseTransform('upper')" style="min-width:34px;">AA</button>
+                <button class="btn-icon" onclick="caseTransform('lower')" style="min-width:34px;">aa</button>
+                <button class="btn-icon" onclick="caseTransform('title')" style="min-width:34px;">Aa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rich-editor" id="editor-es" contenteditable="true" spellcheck="true"></div>
+        <div class="statusbar">
+          <span id="wc-es">0 palabras</span>
+          <span id="ch-es">0 caracteres</span>
+        </div>
+        <div class="media-row" id="mr-es">
+          <input class="media-input" id="mi-es" placeholder="" />
+          <button class="btn btn-amber btn-sm" onclick="insertMedia('es')">Insertar</button>
+          <button class="btn btn-ghost btn-sm" onclick="hideMedia('es')">Cancelar</button>
+        </div>
+      </div>
+
+      <!-- EN -->
+      <div id="lp-en" class="lang-panel">
+        <div class="toolbar-wrap">
+          <div class="tb-tabs">
+            <button class="tb-tab active" onclick="switchTb('en','inicio',this)">Home</button>
+            <button class="tb-tab"        onclick="switchTb('en','insertar',this)">Insert</button>
+            <button class="tb-tab"        onclick="switchTb('en','formato',this)">Format</button>
+          </div>
+
+          <!-- Home EN -->
+          <div class="tb-body active" id="tb-en-inicio">
+            <div class="tb-group">
+              <div class="tb-gl">Font</div>
+              <div class="tb-row">
+                <select class="tb-select w-lg" onchange="setFont(this.value);this.value=''">
+                  <option value="">Font…</option>
+                  <optgroup label="— Sans-serif">
+                    <option value="Inter,system-ui,sans-serif">Inter</option>
+                    <option value="Arial,sans-serif">Arial</option>
+                    <option value="'Helvetica Neue',sans-serif">Helvetica</option>
+                    <option value="Verdana,sans-serif">Verdana</option>
+                    <option value="Tahoma,sans-serif">Tahoma</option>
+                    <option value="Calibri,sans-serif">Calibri</option>
+                    <option value="'Gill Sans',sans-serif">Gill Sans</option>
+                    <option value="'Trebuchet MS',sans-serif">Trebuchet</option>
+                    <option value="Optima,sans-serif">Optima</option>
+                    <option value="Futura,sans-serif">Futura</option>
+                  </optgroup>
+                  <optgroup label="— Serif">
+                    <option value="'Playfair Display',Georgia,serif">Playfair Display</option>
+                    <option value="Georgia,serif">Georgia</option>
+                    <option value="'Times New Roman',serif">Times New Roman</option>
+                    <option value="Garamond,serif">Garamond</option>
+                    <option value="'Book Antiqua',Palatino,serif">Book Antiqua</option>
+                    <option value="'Palatino Linotype',serif">Palatino</option>
+                    <option value="'Century Schoolbook',serif">Century Schoolbook</option>
+                  </optgroup>
+                  <optgroup label="— Monospace">
+                    <option value="'Courier New',monospace">Courier New</option>
+                    <option value="'Lucida Console',monospace">Lucida Console</option>
+                    <option value="Consolas,monospace">Consolas</option>
+                  </optgroup>
+                </select>
+                <select class="tb-select w-sm" onchange="setSize(this.value);this.value=''">
+                  <option value="">Size</option>
+                  <option value="1">8</option>
+                  <option value="2">10</option>
+                  <option value="3">12</option>
+                  <option value="4">14</option>
+                  <option value="5">18</option>
+                  <option value="6">24</option>
+                  <option value="7">36</option>
+                </select>
+              </div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('bold')"          title="Bold"><b>B</b></button>
+                <button class="btn-icon" onclick="fmt('italic')"        title="Italic"><i>I</i></button>
+                <button class="btn-icon" onclick="fmt('underline')"     title="Underline"><u>U</u></button>
+                <button class="btn-icon" onclick="fmt('strikeThrough')" title="Strikethrough"><s>S</s></button>
+                <button class="btn-icon" onclick="fmtAmber()"           title="Accent colour" style="color:var(--amber);font-weight:700;border-bottom:2px solid var(--amber);">A</button>
+                <button class="btn-icon" onclick="fmt('removeFormat')"  title="Clear format" style="font-size:.65rem;">✕ fmt</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Paragraph</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('insertUnorderedList')" title="Bullets">&#8226;</button>
+                <button class="btn-icon" onclick="fmt('insertOrderedList')"   title="Numbered">1.</button>
+                <button class="btn-icon" onclick="fmt('indent')"              title="Indent +">&#8677;</button>
+                <button class="btn-icon" onclick="fmt('outdent')"             title="Indent −">&#8676;</button>
+              </div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('justifyLeft')"   title="Left">&#8676;&#9646;</button>
+                <button class="btn-icon" onclick="fmt('justifyCenter')" title="Center">&#9644;</button>
+                <button class="btn-icon" onclick="fmt('justifyRight')"  title="Right">&#9646;&#8677;</button>
+                <button class="btn-icon" onclick="fmt('justifyFull')"   title="Justify">&#9644;&#9644;</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Style</div>
+              <div class="tb-row">
+                <select class="tb-select w-lg" onchange="setBlock(this.value,'en');this.value=''">
+                  <option value="">Style…</option>
+                  <option value="p">Paragraph</option>
+                  <option value="h2">Heading H2</option>
+                  <option value="h3">Subheading H3</option>
+                  <option value="blockquote">Block quote</option>
+                  <option value="pre">Code / preformatted</option>
+                </select>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">History</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('undo')" title="Undo">&#8630;</button>
+                <button class="btn-icon" onclick="fmt('redo')" title="Redo">&#8631;</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Insert EN -->
+          <div class="tb-body" id="tb-en-insertar">
+            <div class="tb-group">
+              <div class="tb-gl">Table</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="doTable('en')" style="min-width:54px;gap:.3rem;">&#8862; Table</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Media</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="showMedia('img','en')"  style="min-width:44px;gap:.25rem;">🖼 Img</button>
+                <button class="btn-icon" onclick="showMedia('yt','en')"   style="min-width:40px;gap:.25rem;">▶ YT</button>
+                <button class="btn-icon" onclick="showMedia('vid','en')"  style="min-width:44px;gap:.25rem;">🎬 Vid</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Link</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="showMedia('link','en')" style="min-width:54px;gap:.25rem;">🔗 Link</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Divider</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="doHR('en')" style="min-width:60px;">&#8213; Line</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Format EN -->
+          <div class="tb-body" id="tb-en-formato">
+            <div class="tb-group">
+              <div class="tb-gl">Position</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="fmt('superscript')" title="Superscript">x²</button>
+                <button class="btn-icon" onclick="fmt('subscript')"   title="Subscript">x₂</button>
+              </div>
+            </div>
+            <div class="tb-group">
+              <div class="tb-gl">Case</div>
+              <div class="tb-row">
+                <button class="btn-icon" onclick="caseTransform('upper')" style="min-width:34px;">AA</button>
+                <button class="btn-icon" onclick="caseTransform('lower')" style="min-width:34px;">aa</button>
+                <button class="btn-icon" onclick="caseTransform('title')" style="min-width:34px;">Aa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rich-editor" id="editor-en" contenteditable="true" spellcheck="true" lang="en"></div>
+        <div class="statusbar">
+          <span id="wc-en">0 words</span>
+          <span id="ch-en">0 characters</span>
+        </div>
+        <div class="media-row" id="mr-en">
+          <input class="media-input" id="mi-en" placeholder="" />
+          <button class="btn btn-amber btn-sm" onclick="insertMedia('en')">Insert</button>
+          <button class="btn btn-ghost btn-sm" onclick="hideMedia('en')">Cancel</button>
+        </div>
+      </div>
+
+      <div class="ed-actions">
+        <div class="ed-actions-left">
+          <button class="btn btn-danger btn-sm" id="btn-delete" onclick="deletePost()" style="display:none;">Eliminar publicación</button>
+        </div>
+        <button class="btn btn-ghost" onclick="showView('list')">Cancelar</button>
+        <button class="btn btn-amber" id="btn-save" onclick="savePost()">Publicar</button>
+      </div>
+    </div>
+
+    <!-- CONFIG -->
+    <div id="view-config">
+      <div class="cfg-card">
+        <h2>Conexión con GitHub</h2>
+        <div class="cfg-alert">
+          <strong>Primer acceso:</strong> Para publicar artículos necesitas meter tu token de GitHub aquí.
+          Se guarda solo en este navegador y nunca es visible para nadie más.
+        </div>
+        <div class="cfg-row">
+          <label class="f-label">Personal Access Token</label>
+          <input class="f-input" type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+          <p class="cfg-note">Genera uno en GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic). Marca solo el permiso <strong>repo</strong>.</p>
+        </div>
+        <button class="btn btn-primary" onclick="saveConfig()" style="width:auto;margin-top:.5rem;">Guardar token</button>
+      </div>
+      <div class="cfg-card">
+        <h2>Contraseña del panel</h2>
+        <div class="cfg-row">
+          <label class="f-label">Nueva contraseña (mín. 10 caracteres)</label>
+          <input class="f-input" type="password" id="cfg-pass" placeholder="••••••••••" autocomplete="new-password" />
+          <p class="cfg-note">Déjalo vacío si no quieres cambiarla. El cambio solo afecta a este dispositivo.</p>
+        </div>
+        <button class="btn btn-primary" onclick="savePass()" style="width:auto;margin-top:.5rem;">Cambiar contraseña</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── CONFIGURACIÓN ─────────────────────────────────────────────────
+const GH_USER = 'pardozarabozo';
+const GH_REPO = 'pardozarabozo.github.io';
+const GH_FILE = 'posts.js';
+const DEFAULT_PASS = 'Mangurrino.1';
+
+// ── AUTH ──────────────────────────────────────────────────────────
+const getPass  = () => localStorage.getItem('pz_pass')  || DEFAULT_PASS;
+const getToken = () => localStorage.getItem('pz_token') || '';
+
+function doLogin() {
+  if (document.getElementById('inp-pass').value === getPass()) {
+    document.getElementById('screen-login').style.display = 'none';
+    document.getElementById('screen-panel').style.display = 'block';
+    loadPosts();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+function doLogout() {
+  document.getElementById('screen-panel').style.display = 'none';
+  document.getElementById('screen-login').style.display = 'flex';
+  document.getElementById('inp-pass').value = '';
+}
+document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── GITHUB API ────────────────────────────────────────────────────
+async function ghGet() {
+  const r = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`,
+    { headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json' } });
+  if (!r.ok) throw new Error('No se pudo conectar con GitHub. Ve a Configuración y comprueba el token.');
+  return r.json();
+}
+async function ghPut(content, sha) {
+  const r = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`,
+    { method: 'PUT', headers: { Authorization: `token ${getToken()}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Panel: actualizar publicaciones', content: btoa(unescape(encodeURIComponent(content))), sha }) });
+  if (!r.ok) throw new Error('Error al guardar en GitHub. Inténtalo de nuevo.');
+  return r.json();
+}
+
+// ── POSTS ─────────────────────────────────────────────────────────
+let posts = [], sha = '', editingId = null, mediaMode = null, activeLang = 'es';
+
+async function loadPosts() {
+  if (!getToken()) { renderTable(); return; }
+  try {
+    const d = await ghGet();
+    sha = d.sha;
+    const raw = decodeURIComponent(escape(atob(d.content)));
+    const m = raw.match(/const POSTS\s*=\s*(\[[\s\S]*?\]);/);
+    posts = m ? JSON.parse(m[1].replace(/\/\*[\s\S]*?\*\//g,'').replace(/\/\/.*/g,'').trim()) || [] : [];
+    renderTable();
+  } catch(e) { toast(e.message, 'error'); renderTable(); }
+}
+
+const serialize = () =>
+  `// Generado por el panel — no editar manualmente\nconst POSTS = ${JSON.stringify(posts, null, 2)};\n`;
+
+// ── VISTAS ────────────────────────────────────────────────────────
+function showView(name, tabEl) {
+  ['list','editor','config'].forEach(v =>
+    document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none');
+  if (tabEl) {
+    document.querySelectorAll('.p-body .p-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+  }
+  if (name === 'list') renderTable();
+}
+
+// ── TABLA ─────────────────────────────────────────────────────────
+function renderTable() {
+  const w = document.getElementById('posts-table-wrap');
+  if (!posts.length) {
+    w.innerHTML = `<div class="empty-panel"><p>Todavía no hay publicaciones. Crea la primera.</p></div>`; return;
+  }
+  w.innerHTML = `<table class="post-table">
+    <thead><tr><th>Título</th><th>Categoría</th><th>Fecha</th><th></th></tr></thead>
+    <tbody>${posts.map(p => `<tr>
+      <td class="td-title">${p.title_es}</td>
+      <td class="td-cat">${p.category_es}</td>
+      <td class="td-date">${p.date_es}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="openEditor('${p.id}')">Editar</button></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ── EDITOR ────────────────────────────────────────────────────────
+function openEditor(id) {
+  editingId = id;
+  const p = id ? posts.find(x => x.id === id) : null;
+  document.getElementById('ed-title-lbl').textContent          = p ? 'Editar publicación' : 'Nueva publicación';
+  document.getElementById('btn-delete').style.display          = p ? 'inline-flex' : 'none';
+  document.getElementById('btn-save').textContent              = p ? 'Guardar cambios' : 'Publicar';
+  ['cat-es','cat-en','title-es','title-en','excerpt-es','excerpt-en','date-es','date-en']
+    .forEach(k => document.getElementById('f-' + k).value = p?.[k.replace('-','_')] || '');
+  document.getElementById('editor-es').innerHTML = p?.content_es || '';
+  document.getElementById('editor-en').innerHTML = p?.content_en || '';
+  updateStats('es'); updateStats('en');
+  switchLang('es');
+  showView('editor');
+}
+
+async function savePost() {
+  const te = document.getElementById('f-title-es').value.trim();
+  const ten = document.getElementById('f-title-en').value.trim();
+  if (!te || !ten) { toast('Añade el título en los dos idiomas.', 'error'); return; }
+  if (!getToken()) { toast('Configura el token de GitHub en Configuración.', 'error'); return; }
+  const id = editingId || slugify(te);
+  const post = {
+    id,
+    date_es:     document.getElementById('f-date-es').value.trim(),
+    date_en:     document.getElementById('f-date-en').value.trim(),
+    category_es: document.getElementById('f-cat-es').value.trim(),
+    category_en: document.getElementById('f-cat-en').value.trim(),
+    title_es: te, title_en: ten,
+    excerpt_es:  document.getElementById('f-excerpt-es').value.trim(),
+    excerpt_en:  document.getElementById('f-excerpt-en').value.trim(),
+    content_es:  document.getElementById('editor-es').innerHTML,
+    content_en:  document.getElementById('editor-en').innerHTML,
+  };
+  if (editingId) { const i = posts.findIndex(x => x.id === editingId); posts[i] = post; }
+  else { posts.unshift(post); }
+  const btn = document.getElementById('btn-save');
+  try {
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    const d = await ghGet(); sha = d.sha;
+    await ghPut(serialize(), sha);
+    toast('Publicado. La web se actualiza en ~1 minuto.', 'success');
+    showView('list');
+  } catch(e) {
+    toast(e.message, 'error');
+    if (!editingId) posts.shift();
+  } finally {
+    btn.disabled = false; btn.textContent = editingId ? 'Guardar cambios' : 'Publicar';
+  }
+}
+
+async function deletePost() {
+  if (!confirm('¿Eliminar esta publicación? No se puede deshacer.')) return;
+  posts = posts.filter(p => p.id !== editingId);
+  try {
+    const d = await ghGet(); sha = d.sha;
+    await ghPut(serialize(), sha);
+    toast('Publicación eliminada.', 'success'); showView('list');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ── EDITOR RICO ───────────────────────────────────────────────────
+function switchLang(lang, tabEl) {
+  activeLang = lang;
+  document.querySelectorAll('.lang-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('lp-' + lang).classList.add('active');
+  if (tabEl) {
+    document.querySelectorAll('.lang-switch .ls-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+  }
+  document.getElementById('editor-' + lang).focus();
+}
+
+function switchTb(lang, tab, el) {
+  ['inicio','insertar','formato'].forEach(t => {
+    const b = document.getElementById(`tb-${lang}-${t}`);
+    if (b) b.classList.remove('active');
+  });
+  document.getElementById(`tb-${lang}-${tab}`)?.classList.add('active');
+  if (el) {
+    el.closest('.tb-tabs').querySelectorAll('.tb-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+const getEd = () => document.getElementById('editor-' + activeLang);
+const fmt   = cmd => { getEd().focus(); document.execCommand(cmd, false, null); };
+const fmtAmber = () => { getEd().focus(); document.execCommand('foreColor', false, '#B8912A'); };
+const setFont  = f  => { if (!f) return; getEd().focus(); document.execCommand('fontName', false, f); };
+const setSize  = s  => { if (!s) return; getEd().focus(); document.execCommand('fontSize', false, s); };
+
+function setBlock(tag, lang) {
+  if (!tag) return;
+  document.getElementById('editor-' + lang).focus();
+  document.execCommand('formatBlock', false, tag);
+}
+
+function doHR(lang) {
+  document.getElementById('editor-' + lang).focus();
+  document.execCommand('insertHTML', false, '<hr /><p><br></p>');
+}
+
+function doTable(lang) {
+  document.getElementById('editor-' + lang).focus();
+  document.execCommand('insertHTML', false, `
+    <table style="width:100%;border-collapse:collapse;margin-block:1.25rem;">
+      <thead><tr>
+        <th style="border:1px solid #D9D3C7;padding:.4rem .6rem;font-weight:600;">Columna 1</th>
+        <th style="border:1px solid #D9D3C7;padding:.4rem .6rem;font-weight:600;">Columna 2</th>
+        <th style="border:1px solid #D9D3C7;padding:.4rem .6rem;font-weight:600;">Columna 3</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td></tr>
+        <tr><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td><td style="border:1px solid #D9D3C7;padding:.4rem .6rem;">Dato</td></tr>
+      </tbody>
+    </table><p><br></p>`);
+}
+
+function caseTransform(type) {
+  const sel = window.getSelection();
+  if (!sel.rangeCount || sel.isCollapsed) return;
+  const t = sel.getRangeAt(0).toString();
+  const r = type === 'upper' ? t.toUpperCase()
+           : type === 'lower' ? t.toLowerCase()
+           : t.replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
+  document.execCommand('insertText', false, r);
+}
+
+function showMedia(type, lang) {
+  activeLang = lang; mediaMode = type;
+  const row = document.getElementById('mr-' + lang);
+  const inp = document.getElementById('mi-' + lang);
+  row.style.display = 'flex';
+  const ph = { img:'URL o nombre del archivo (ej: img/grafico.png)', yt:'URL de YouTube', vid:'Nombre del vídeo (ej: img/video.mp4)', link:'URL del enlace' };
+  inp.placeholder = ph[type]; inp.value = ''; inp.focus();
+}
+
+function hideMedia(lang) {
+  document.getElementById('mr-' + lang).style.display = 'none';
+  document.getElementById('mi-' + lang).value = '';
+  mediaMode = null;
+}
+
+function insertMedia(lang) {
+  const val = document.getElementById('mi-' + lang).value.trim();
+  if (!val) return;
+  document.getElementById('editor-' + lang).focus();
+  let html = '';
+  if (mediaMode === 'img')  html = `<figure><img src="${val}" alt="" style="max-width:100%;border-radius:3px;" /><figcaption style="font-size:.75rem;color:#6B7280;margin-top:.4rem;font-style:italic;">Fuente: </figcaption></figure><p><br></p>`;
+  if (mediaMode === 'yt')   { const id = val.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/)?.[1] || val; html = `<div class="video-wrap"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div><p><br></p>`; }
+  if (mediaMode === 'vid')  html = `<video controls style="width:100%;margin-block:1rem;border-radius:4px;"><source src="${val}" type="video/mp4"></video><p><br></p>`;
+  if (mediaMode === 'link') { const txt = prompt('Texto del enlace:', 'Ver más') || 'Ver más'; html = `<a href="${val}" target="_blank" rel="noopener" style="color:#B8912A;">${txt}</a>`; }
+  document.execCommand('insertHTML', false, html);
+  hideMedia(lang);
+}
+
+function updateStats(lang) {
+  const txt = document.getElementById('editor-' + lang).innerText.trim();
+  const wc  = txt ? txt.split(/\s+/).length : 0;
+  const cc  = txt.length;
+  const en  = lang === 'en';
+  document.getElementById('wc-' + lang).textContent = en ? `${wc} word${wc!==1?'s':''}` : `${wc} palabra${wc!==1?'s':''}`;
+  document.getElementById('ch-' + lang).textContent = en ? `${cc} char${cc!==1?'s':''}` : `${cc} carác${cc!==1?'teres':'ter'}`;
+}
+document.getElementById('editor-es').addEventListener('input', () => updateStats('es'));
+document.getElementById('editor-en').addEventListener('input', () => updateStats('en'));
+
+// ── CONFIG ────────────────────────────────────────────────────────
+function saveConfig() {
+  const token = document.getElementById('cfg-token').value.trim();
+  if (!token) { toast('Introduce el token.', 'error'); return; }
+  localStorage.setItem('pz_token', token);
+  document.getElementById('cfg-token').value = '';
+  toast('Token guardado.', 'success');
+}
+function savePass() {
+  const p = document.getElementById('cfg-pass').value.trim();
+  if (!p) { toast('Introduce la nueva contraseña.', 'error'); return; }
+  if (p.length < 10) { toast('Mínimo 10 caracteres.', 'error'); return; }
+  localStorage.setItem('pz_pass', p);
+  document.getElementById('cfg-pass').value = '';
+  toast('Contraseña actualizada.', 'success');
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────
+const slugify = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').substring(0,60);
+
+let _tt;
+function toast(msg, type = 'info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = `show ${type}`;
+  clearTimeout(_tt); _tt = setTimeout(() => el.className = '', 3500);
+}
+</script>
+</body>
+</html>
