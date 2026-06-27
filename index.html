@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO -->
+  <title>Pardo Zarabozo — Análisis Financiero Independiente</title>
+  <meta name="description" content="Análisis financiero con criterio propio. Valoración de empresas, macroeconomía y fiscalidad. Eduardo Pardo Zarabozo." />
+  <meta name="author" content="Eduardo Pardo Zarabozo" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://pardozarabozo.github.io/" />
+  <meta name="keywords" content="análisis financiero, valoración empresas, macroeconomía, fiscalidad, finanzas corporativas" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://pardozarabozo.github.io/" />
+  <meta property="og:title"       content="Pardo Zarabozo — Análisis Financiero Independiente" />
+  <meta property="og:description" content="Análisis financiero con criterio propio. Para quien quiere entender de verdad." />
+  <meta property="og:locale"      content="es_ES" />
+  <meta property="og:image"       content="https://pardozarabozo.github.io/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Pardo Zarabozo — Análisis Financiero Independiente" />
+  <meta name="twitter:description" content="Análisis financiero con criterio propio. Para quien quiere entender de verdad." />
+  <meta name="twitter:image"       content="https://pardozarabozo.github.io/og-image.png" />
+
+  <!-- Favicon SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230D1B2A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='18' font-style='italic' font-weight='700' fill='%23B8912A' text-anchor='middle'%3EPZ%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%230D1B2A'/%3E%3Ctext x='90' y='130' font-family='Georgia,serif' font-size='100' font-style='italic' font-weight='700' fill='%23B8912A' text-anchor='middle'%3EPZ%3C/text%3E%3C/svg%3E" />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Person","name":"Eduardo Pardo Zarabozo","url":"https://pardozarabozo.github.io","sameAs":["https://www.linkedin.com/in/eduardopardozarabozo"],"jobTitle":"Analista Financiero Independiente","knowsAbout":["Corporate Finance","Valuation","Macroeconomics","Taxation"]}
+  </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F6Q77NGRM0"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-F6Q77NGRM0');</script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --cream:   #F5F2EC;
+      --ink:     #0D1B2A;
+      --amber:   #B8912A;
+      --muted:   rgba(13,27,42,.55);
+      --rule:    rgba(13,27,42,.1);
+      --surface: #FFFFFF;
+      --ff-d:    'Playfair Display', Georgia, serif;
+      --ff-b:    'Inter', system-ui, sans-serif;
+      --max-w:   1200px;
+      --nav-h:   60px;
+      --status-ok-bg:#eaf4ee; --status-ok-fg:#1a6b3c;
+      --status-err-bg:#fcecea; --status-err-fg:#c0392b;
+    }
+    @media (prefers-color-scheme:dark){:root{
+      --cream:#0F1923; --ink:#E8E2D9; --amber:#C9A84C;
+      --muted:rgba(232,226,217,.55); --rule:rgba(232,226,217,.1);
+      --surface:#162030;
+      --status-ok-bg:#0d2b1a; --status-ok-fg:#5cb882;
+      --status-err-bg:#2b0d0d; --status-err-fg:#e07070;
+    }}
+
+    /* ── Reset ──────────────────────────────────────────────────── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{color-scheme:light dark;scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--ink);font-family:var(--ff-b);font-size:1rem;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    img{display:block;max-width:100%;height:auto;}
+
+    /* ── Layout ─────────────────────────────────────────────────── */
+    .wrap{max-width:var(--max-w);margin-inline:auto;padding-inline:clamp(1.25rem,5vw,5rem);}
+
+    /* ── NAV ────────────────────────────────────────────────────── */
+    nav{position:sticky;top:0;z-index:200;height:var(--nav-h);background:var(--cream);border-bottom:1px solid var(--rule);}
+    .nav-inner{max-width:var(--max-w);margin-inline:auto;padding-inline:clamp(1.25rem,5vw,5rem);height:100%;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+
+    /* Logo */
+    .nav-logo{display:flex;align-items:center;gap:.55rem;cursor:pointer;flex-shrink:0;}
+    .nav-logo-pz{font-family:var(--ff-d);font-style:italic;font-size:1.25rem;font-weight:700;color:var(--amber);line-height:1;}
+    .nav-logo-name{font-family:var(--ff-d);font-size:1rem;font-weight:400;color:var(--ink);letter-spacing:.01em;}
+
+    /* Links */
+    .nav-right{display:flex;align-items:center;gap:2rem;}
+    .nav-links{display:flex;gap:2rem;list-style:none;}
+    .nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:color .2s;cursor:pointer;}
+    .nav-links a:hover{color:var(--ink);}
+    .nav-links a.active{color:var(--amber);}
+
+    /* Idioma */
+    .lang-sw{display:flex;align-items:center;gap:.25rem;cursor:pointer;user-select:none;}
+    .lang-opt{font-size:.75rem;font-weight:500;color:rgba(13,27,42,.4);transition:color .2s;}
+    @media(prefers-color-scheme:dark){.lang-opt{color:rgba(232,226,217,.4);}}
+    .lang-opt.active{color:var(--amber);font-weight:600;}
+    .lang-sep{color:rgba(13,27,42,.2);font-size:.75rem;}
+    @media(prefers-color-scheme:dark){.lang-sep{color:rgba(232,226,217,.2);}}
+
+    /* Hamburguesa */
+    .nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+    .nav-ham span{display:block;width:22px;height:1.5px;background:var(--ink);transition:all .25s;}
+    .nav-ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+    .nav-ham.open span:nth-child(2){opacity:0;}
+    .nav-ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+    /* Menú móvil overlay oscuro */
+    .nav-mob{display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;background:#0D1B2A;z-index:190;padding:2.5rem clamp(1.25rem,5vw,5rem);}
+    .nav-mob.open{display:flex;flex-direction:column;gap:2rem;}
+    .nav-mob-links{list-style:none;display:flex;flex-direction:column;gap:1.5rem;}
+    .nav-mob-links a{font-size:1.3rem;font-weight:500;color:rgba(245,242,236,.7);cursor:pointer;transition:color .2s;letter-spacing:.02em;}
+    .nav-mob-links a.active{color:var(--amber);}
+    .nav-mob-links a:hover{color:#F5F2EC;}
+    .mob-lang{display:flex;align-items:center;gap:.4rem;}
+    .mob-lang-opt{font-size:.85rem;font-weight:500;color:rgba(245,242,236,.35);cursor:pointer;transition:color .2s;}
+    .mob-lang-opt.active{color:var(--amber);}
+    .mob-lang-sep{color:rgba(245,242,236,.2);}
+
+    /* ── PÁGINAS ─────────────────────────────────────────────────── */
+    .page{display:none;opacity:0;transition:opacity .25s ease;padding-top:var(--nav-h);min-height:calc(100vh - var(--nav-h));}
+    .page.active{display:block;}
+    .page.visible{opacity:1;}
+
+    /* ── HERO ───────────────────────────────────────────────────── */
+    .hero{height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-inline:clamp(1.25rem,5vw,5rem);}
+    .hero-name{font-family:var(--ff-d);font-size:clamp(3rem,8vw,5rem);font-weight:700;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin-bottom:.6rem;}
+    .hero-tagline{font-family:var(--ff-b);font-size:clamp(.7rem,.9vw,.8rem);font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:2rem;}
+    .hero-sep{width:60px;height:1px;background:rgba(184,145,42,.4);margin:0 auto 2rem;}
+    .hero-sub{font-size:clamp(1rem,1.5vw,1.15rem);font-weight:400;color:var(--muted);max-width:560px;line-height:1.75;margin-bottom:2.5rem;}
+    .hero-cta{display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:.75rem 2rem;font-size:.8rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;border-radius:3px;}
+    .hero-cta:hover{background:var(--amber);color:var(--cream);}
+    .hero-arrow{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:var(--muted);font-size:1.2rem;animation:bounce 2s infinite;}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+    .hero-wrap{position:relative;height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-inline:clamp(1.25rem,5vw,5rem);}
+
+    /* ── ANÁLISIS ────────────────────────────────────────────────── */
+    .analisis-section{padding-block:clamp(3rem,7vw,6rem);border-top:1px solid var(--rule);}
+    .section-label{font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:.6rem;}
+    .section-title{font-family:var(--ff-d);font-size:clamp(1.6rem,3vw,2rem);font-weight:700;margin-bottom:.4rem;line-height:1.2;}
+    .section-sub{font-size:.88rem;color:var(--muted);margin-bottom:2.5rem;}
+
+    /* Posts */
+    .post-list{list-style:none;}
+    .post-item{display:block;padding-block:1.75rem;border-top:1px solid rgba(13,27,42,.1);cursor:pointer;transition:opacity .15s;}
+    @media(prefers-color-scheme:dark){.post-item{border-top-color:rgba(232,226,217,.1);}}
+    .post-item:last-child{border-bottom:1px solid rgba(13,27,42,.1);}
+    @media(prefers-color-scheme:dark){.post-item:last-child{border-bottom-color:rgba(232,226,217,.1);}}
+    .post-item:hover{opacity:.7;}
+    .post-item:hover .post-title{text-decoration:underline;text-underline-offset:3px;}
+    .post-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
+    .post-cat{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);}
+    .post-date{font-size:.75rem;color:var(--muted);}
+    .post-title{font-family:var(--ff-d);font-size:clamp(1rem,1.8vw,1.25rem);font-weight:600;line-height:1.3;margin-bottom:.4rem;}
+    .post-excerpt{font-size:.875rem;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+    /* Placeholder */
+    .ph-item{padding-block:1.75rem;border-top:1px solid rgba(13,27,42,.08);}
+    .ph-item:last-child{border-bottom:1px solid rgba(13,27,42,.08);}
+    .ph-line{height:.7rem;background:rgba(13,27,42,.08);border-radius:2px;margin-bottom:.5rem;}
+    @media(prefers-color-scheme:dark){.ph-line{background:rgba(232,226,217,.08);}}
+    .ph-line.s{width:20%;} .ph-line.m{width:55%;height:.9rem;} .ph-line.l{width:85%;} .ph-line.xl{width:70%;margin-bottom:0;}
+
+    /* ── SOBRE MÍ ────────────────────────────────────────────────── */
+    .about-wrap{max-width:720px;padding-block:clamp(3rem,7vw,6rem);}
+    .about-body p{font-size:1.05rem;line-height:1.85;}
+    .about-body p+p{margin-top:1.25rem;}
+    .about-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.5rem;}
+    .tag{font-size:.68rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);padding:.35rem .8rem;color:var(--muted);}
+
+    /* ── CONTACTO ────────────────────────────────────────────────── */
+    .contact-wrap{max-width:580px;padding-block:clamp(3rem,7vw,6rem);}
+    .contact-intro{font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;}
+    .contact-links{display:flex;flex-direction:column;gap:.9rem;margin-bottom:3rem;}
+    .contact-link{display:inline-flex;align-items:center;gap:.75rem;font-size:.9rem;font-weight:500;transition:color .2s;}
+    .contact-link:hover{color:var(--amber);}
+    .contact-link svg{width:15px;height:15px;opacity:.45;flex-shrink:0;}
+    .contact-divider{border:none;border-top:1px solid var(--rule);margin-bottom:2rem;}
+    .contact-form-title{font-family:var(--ff-d);font-size:1.05rem;font-weight:700;margin-bottom:1.5rem;}
+    .fg{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem;}
+    .fg label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+    .fg input,.fg textarea{border:1.5px solid var(--rule);background:var(--surface);padding:.65rem .85rem;font-family:var(--ff-b);font-size:.9rem;color:var(--ink);outline:none;transition:border-color .2s;width:100%;border-radius:3px;}
+    .fg input:focus,.fg textarea:focus{border-color:var(--amber);}
+    .fg textarea{resize:vertical;min-height:120px;}
+    .form-status{font-size:.82rem;margin-top:.75rem;padding:.6rem .85rem;display:none;border-radius:3px;}
+    .form-status.ok{background:var(--status-ok-bg);color:var(--status-ok-fg);display:block;}
+    .form-status.err{background:var(--status-err-bg);color:var(--status-err-fg);display:block;}
+    .btn-submit{display:inline-flex;align-items:center;gap:.5rem;background:var(--ink);color:var(--cream);border:none;padding:.72rem 1.75rem;font-family:var(--ff-b);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:opacity .2s;margin-top:.5rem;border-radius:3px;}
+    .btn-submit:hover{opacity:.8;}
+    .btn-submit:disabled{opacity:.45;cursor:not-allowed;}
+
+    /* ── ARTÍCULO ────────────────────────────────────────────────── */
+    .article-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;padding-block:1.5rem;transition:color .2s;}
+    .article-back:hover{color:var(--ink);}
+    .article-header{padding-top:clamp(1.5rem,4vw,3rem);padding-bottom:2.5rem;border-bottom:1px solid var(--rule);margin-bottom:3rem;max-width:800px;}
+    .article-cat{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:1rem;}
+    .article-title{font-family:var(--ff-d);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.2rem;}
+    .article-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-top:1.2rem;}
+    .article-date{font-size:.8rem;color:var(--muted);}
+    .article-lang-btn{display:inline-flex;align-items:center;gap:.4rem;background:none;border:1.5px solid var(--rule);border-radius:2rem;padding:.28rem .75rem;cursor:pointer;font-size:.7rem;font-weight:600;letter-spacing:.1em;color:var(--muted);font-family:var(--ff-b);transition:border-color .2s,color .2s;}
+    .article-lang-btn:hover{border-color:var(--amber);color:var(--ink);}
+    .article-body{max-width:680px;line-height:1.85;font-size:1.02rem;}
+    .article-body p{margin-bottom:1.4rem;}
+    .article-body h2{font-family:var(--ff-d);font-size:1.5rem;font-weight:700;margin-top:2.5rem;margin-bottom:1rem;line-height:1.3;}
+    .article-body h3{font-family:var(--ff-d);font-size:1.15rem;font-weight:600;margin-top:2rem;margin-bottom:.75rem;}
+    .article-body img{width:100%;margin-block:2rem;border:1px solid var(--rule);loading:lazy;}
+    .article-body figure{margin-block:2rem;}
+    .article-body figcaption{font-size:.78rem;color:var(--muted);margin-top:.5rem;font-style:italic;}
+    .article-body ul,.article-body ol{padding-left:1.5rem;margin-bottom:1.4rem;}
+    .article-body li{margin-bottom:.3rem;}
+    .article-body blockquote{border-left:3px solid var(--amber);padding-left:1.25rem;margin-block:1.75rem;color:var(--muted);font-style:italic;}
+    .article-body table{width:100%;border-collapse:collapse;margin-block:2rem;font-size:.9rem;}
+    .article-body th{text-align:left;font-weight:500;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--rule);padding:.6rem .75rem;}
+    .article-body td{padding:.6rem .75rem;border-bottom:1px solid var(--rule);}
+    .article-body tr:last-child td{border-bottom:none;}
+    .article-body .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin-block:2rem;border:1px solid var(--rule);}
+    .article-body .video-wrap iframe,.article-body .video-wrap video{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+    .article-footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--rule);padding-bottom:4rem;}
+    .article-footer-back{display:inline-flex;align-items:center;gap:.5rem;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;}
+    .article-footer-back:hover{color:var(--ink);}
+
+    /* ── FOOTER ─────────────────────────────────────────────────── */
+    footer{border-top:1px solid rgba(13,27,42,.15);padding-block:1.75rem;text-align:center;}
+    @media(prefers-color-scheme:dark){footer{border-top-color:rgba(232,226,217,.15);}}
+    .footer-copy{font-size:.75rem;color:rgba(13,27,42,.4);font-weight:400;}
+    @media(prefers-color-scheme:dark){.footer-copy{color:rgba(232,226,217,.4);}}
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media(max-width:768px){
+      .nav-links,.nav-right>.lang-sw{display:none;}
+      .nav-ham{display:flex;}
+      .post-date{display:none;}
+    }
+    @media(min-width:769px){.nav-mob{display:none!important;}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <span class="nav-logo-pz">PZ</span>
+      <span class="nav-logo-name">Pardo Zarabozo</span>
+    </div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a id="nl-inicio" class="active" onclick="showPage('home')"    data-es="Inicio"   data-en="Home">Inicio</a></li>
+        <li><a id="nl-sobre"               onclick="showPage('sobre')"   data-es="Sobre mí" data-en="About">Sobre mí</a></li>
+        <li><a id="nl-contacto"            onclick="showPage('contacto')" data-es="Contacto" data-en="Contact">Contacto</a></li>
+      </ul>
+      <div class="lang-sw" onclick="toggleLang()">
+        <span class="lang-opt active" id="l-es">ES</span>
+        <span class="lang-sep"> | </span>
+        <span class="lang-opt"        id="l-en">EN</span>
+      </div>
+    </div>
+    <button class="nav-ham" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="nav-mob" id="nav-mob">
+  <ul class="nav-mob-links">
+    <li><a id="ml-inicio"   class="active" onclick="showPage('home');toggleMenu()"    data-es="Inicio"   data-en="Home">Inicio</a></li>
+    <li><a id="ml-sobre"                  onclick="showPage('sobre');toggleMenu()"   data-es="Sobre mí" data-en="About">Sobre mí</a></li>
+    <li><a id="ml-contacto"               onclick="showPage('contacto');toggleMenu()" data-es="Contacto" data-en="Contact">Contacto</a></li>
+  </ul>
+  <div class="mob-lang" onclick="toggleLang()">
+    <span class="mob-lang-opt active" id="ml-es">ES</span>
+    <span class="mob-lang-sep"> | </span>
+    <span class="mob-lang-opt"        id="ml-en">EN</span>
+  </div>
+</div>
+
+<!-- ══ INICIO ══════════════════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero-wrap">
+    <h1 class="hero-name">Pardo Zarabozo</h1>
+    <p class="hero-tagline" data-es="Análisis Financiero Independiente" data-en="Independent Financial Analysis">Análisis Financiero Independiente</p>
+    <div class="hero-sep"></div>
+    <p class="hero-sub" data-es="Analizo empresas y mercados con criterio propio. Sin consenso fácil." data-en="I analyze companies and markets with independent judgment. No easy consensus.">
+      Analizo empresas y mercados con criterio propio. Sin consenso fácil.
+    </p>
+    <span class="hero-cta" onclick="scrollToAnalisis()" data-es="Ver análisis" data-en="See analysis">Ver análisis</span>
+    <div class="hero-arrow">↓</div>
+  </div>
+
+  <div id="analisis" class="analisis-section">
+    <div class="wrap">
+      <p class="section-label" data-es="Publicaciones" data-en="Publications">Publicaciones</p>
+      <h2 class="section-title" data-es="Análisis" data-en="Analysis">Análisis</h2>
+      <p class="section-sub" data-es="Tesis de inversión, macroeconomía y fiscalidad" data-en="Investment theses, macroeconomics and tax">Tesis de inversión, macroeconomía y fiscalidad</p>
+      <div id="posts-container"></div>
+    </div>
+  </div>
+
+  <footer><div class="footer-copy">© Pardo Zarabozo 2026</div></footer>
+</div>
+
+<!-- ══ SOBRE MÍ ═════════════════════════════════════════════════════ -->
+<div id="page-sobre" class="page">
+  <div class="wrap">
+    <div class="about-wrap">
+      <p class="section-label" data-es="Sobre mí" data-en="About">Sobre mí</p>
+      <h1 style="font-family:var(--ff-d);font-size:clamp(1.8rem,3vw,2.2rem);font-weight:700;margin-bottom:2rem;">Eduardo Pardo Zarabozo</h1>
+      <div class="about-body">
+        <p data-es="Soy Eduardo Pardo Zarabozo, estudiante de GADE en la Universidad de Cantabria. Este proyecto nace antes de tener un título — precisamente porque creo que el criterio no espera."
+           data-en="I am Eduardo Pardo Zarabozo, a Business Administration student at the University of Cantabria. This project starts before the degree — because I believe sound judgement does not wait.">
+          Soy Eduardo Pardo Zarabozo, estudiante de GADE en la Universidad de Cantabria. Este proyecto nace antes de tener un título — precisamente porque creo que el criterio no espera.
+        </p>
+        <p data-es="Entender bien los mercados y las empresas no es un fin en sí mismo. Es la base para tomar mejores decisiones sobre el capital — y eso es lo que me mueve."
+           data-en="Understanding markets and businesses is not an end in itself. It is the foundation for making better decisions about capital — and that is what drives me.">
+          Entender bien los mercados y las empresas no es un fin en sí mismo. Es la base para tomar mejores decisiones sobre el capital — y eso es lo que me mueve.
+        </p>
+      </div>
+      <div class="about-tags">
+        <span class="tag" data-es="Finanzas corporativas" data-en="Corporate Finance">Finanzas corporativas</span>
+        <span class="tag" data-es="Valoración"            data-en="Valuation">Valoración</span>
+        <span class="tag" data-es="Macroeconomía"         data-en="Macroeconomics">Macroeconomía</span>
+        <span class="tag" data-es="Fiscalidad"            data-en="Taxation">Fiscalidad</span>
+        <span class="tag" data-es="Consultoría"           data-en="Consulting">Consultoría</span>
+        <span class="tag">ES · EN · PT</span>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-copy">© Pardo Zarabozo 2026</div></footer>
+</div>
+
+<!-- ══ CONTACTO ═════════════════════════════════════════════════════ -->
+<div id="page-contacto" class="page">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <p class="section-label" data-es="Contacto" data-en="Contact">Contacto</p>
+      <h1 style="font-family:var(--ff-d);font-size:clamp(1.8rem,3vw,2.2rem);font-weight:700;margin-bottom:1.5rem;" data-es="Hablemos" data-en="Get in touch">Hablemos</h1>
+      <p class="contact-intro" data-es="Para consultas, colaboraciones o simplemente para discutir un análisis — puedes escribirme directamente." data-en="For enquiries, collaborations or simply to discuss an analysis — write to me directly.">
+        Para consultas, colaboraciones o simplemente para discutir un análisis — puedes escribirme directamente.
+      </p>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:contacto.pardozarabozo@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+          contacto.pardozarabozo@gmail.com
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/eduardopardozarabozo" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+      </div>
+      <hr class="contact-divider" />
+      <p class="contact-form-title" data-es="Enviar mensaje" data-en="Send a message">Enviar mensaje</p>
+      <div class="fg"><label data-es="Nombre" data-en="Name">Nombre</label><input type="text" id="f-nombre" autocomplete="name" /></div>
+      <div class="fg"><label>Email</label><input type="email" id="f-email" autocomplete="email" /></div>
+      <div class="fg"><label data-es="Mensaje" data-en="Message">Mensaje</label><textarea id="f-mensaje" rows="5"></textarea></div>
+      <button class="btn-submit" id="btn-submit" onclick="sendForm()" data-es="Enviar →" data-en="Send →">Enviar →</button>
+      <div class="form-status" id="form-status"></div>
+    </div>
+  </div>
+  <footer><div class="footer-copy">© Pardo Zarabozo 2026</div></footer>
+</div>
+
+<!-- ══ ARTÍCULO ═════════════════════════════════════════════════════ -->
+<div id="page-article" class="page">
+  <div class="wrap">
+    <span class="article-back" onclick="showPage('home')">← <span data-es="Volver" data-en="Back">Volver</span></span>
+    <div class="article-header">
+      <p class="article-cat" id="article-cat"></p>
+      <h1 class="article-title" id="article-title"></h1>
+      <div class="article-meta">
+        <span class="article-date" id="article-date"></span>
+        <button class="article-lang-btn" onclick="toggleArticleLang()"><span id="article-lang-lbl">Read in English</span></button>
+      </div>
+    </div>
+    <div class="article-body" id="article-body"></div>
+    <div class="article-footer">
+      <span class="article-footer-back" onclick="showPage('home')">← <span data-es="Volver a análisis" data-en="Back to analysis">Volver a análisis</span></span>
+    </div>
+  </div>
+</div>
+
+<script src="posts.js"></script>
+<script>
+// ── Estado ────────────────────────────────────────────────────────
+let currentLang = localStorage.getItem('pz_lang') || 'es';
+let currentArticleLang = 'es';
+let currentPost = null;
+let currentPage = 'home';
+
+// ── Navegación ────────────────────────────────────────────────────
+function showPage(name) {
+  if (currentPage === name && name !== 'home') return;
+  document.getElementById('nav-mob').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  const old = document.querySelector('.page.active');
+  if (old) {
+    old.classList.remove('visible');
+    setTimeout(() => { old.classList.remove('active'); activate(name); }, 220);
+  } else { activate(name); }
+  if (name !== 'article') { updateNav(name); currentPage = name; }
+  window.scrollTo({ top: 0 });
+}
+
+function activate(name) {
+  const el = document.getElementById('page-' + name);
+  if (!el) return;
+  el.classList.add('active');
+  void el.offsetWidth;
+  el.classList.add('visible');
+}
+
+function updateNav(name) {
+  const map = { home:'inicio', sobre:'sobre', contacto:'contacto' };
+  const key = map[name];
+  ['inicio','sobre','contacto'].forEach(k => {
+    document.getElementById('nl-' + k)?.classList.remove('active');
+    document.getElementById('ml-' + k)?.classList.remove('active');
+  });
+  if (key) {
+    document.getElementById('nl-' + key)?.classList.add('active');
+    document.getElementById('ml-' + key)?.classList.add('active');
+  }
+}
+
+// ── Hamburguesa ───────────────────────────────────────────────────
+function toggleMenu() {
+  document.getElementById('nav-mob').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+
+// ── Idioma ────────────────────────────────────────────────────────
+function toggleLang() {
+  currentLang = currentLang === 'es' ? 'en' : 'es';
+  localStorage.setItem('pz_lang', currentLang);
+  applyLang();
+}
+
+function applyLang() {
+  const isEN = currentLang === 'en';
+  document.documentElement.lang = isEN ? 'en' : 'es';
+  ['l-es','ml-es'].forEach(id => document.getElementById(id)?.classList.toggle('active', !isEN));
+  ['l-en','ml-en'].forEach(id => document.getElementById(id)?.classList.toggle('active',  isEN));
+  document.querySelectorAll('[data-es]').forEach(el => {
+    const t = isEN ? el.dataset.en : el.dataset.es;
+    if (t !== undefined) el.innerHTML = t;
+  });
+  renderPosts();
+  if (currentPost) { currentArticleLang = currentLang; renderArticleContent(); }
+}
+
+// ── Artículo ──────────────────────────────────────────────────────
+function toggleArticleLang() {
+  currentArticleLang = currentArticleLang === 'es' ? 'en' : 'es';
+  renderArticleContent();
+}
+
+function renderArticleContent() {
+  if (!currentPost) return;
+  const isEN = currentArticleLang === 'en';
+  document.getElementById('article-cat').textContent   = isEN ? currentPost.category_en : currentPost.category_es;
+  document.getElementById('article-title').textContent = isEN ? currentPost.title_en    : currentPost.title_es;
+  document.getElementById('article-date').textContent  = isEN ? currentPost.date_en     : currentPost.date_es;
+  document.getElementById('article-body').innerHTML    = isEN ? currentPost.content_en  : currentPost.content_es;
+  document.getElementById('article-lang-lbl').textContent = isEN ? 'Leer en español' : 'Read in English';
+}
+
+// ── Posts ─────────────────────────────────────────────────────────
+function renderPosts() {
+  const c = document.getElementById('posts-container');
+  const isEN = currentLang === 'en';
+  if (!window.POSTS || !POSTS.length) {
+    c.innerHTML = `<ul class="post-list">${[0,1,2].map(() =>
+      `<li class="ph-item"><div class="ph-line s"></div><div class="ph-line m"></div><div class="ph-line l"></div><div class="ph-line xl"></div></li>`
+    ).join('')}</ul>`;
+    return;
+  }
+  c.innerHTML = `<ul class="post-list">${POSTS.map(p => `
+    <li class="post-item" onclick="openPost('${p.id}')">
+      <div class="post-meta">
+        <span class="post-cat">${isEN ? p.category_en : p.category_es}</span>
+        <span class="post-date">${isEN ? p.date_en : p.date_es}</span>
+      </div>
+      <p class="post-title">${isEN ? p.title_en : p.title_es}</p>
+      <p class="post-excerpt">${isEN ? p.excerpt_en : p.excerpt_es}</p>
+    </li>`).join('')}</ul>`;
+}
+
+function openPost(id) {
+  currentPost = POSTS.find(p => p.id === id);
+  if (!currentPost) return;
+  currentArticleLang = currentLang;
+  showPage('article');
+  renderArticleContent();
+  document.title = `${currentPost.title_es} — Pardo Zarabozo`;
+}
+
+// ── Scroll CTA ────────────────────────────────────────────────────
+function scrollToAnalisis() {
+  document.getElementById('analisis').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── Formulario Formspree ──────────────────────────────────────────
+async function sendForm() {
+  const nombre  = document.getElementById('f-nombre').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const mensaje = document.getElementById('f-mensaje').value.trim();
+  const status  = document.getElementById('form-status');
+  const btn     = document.getElementById('btn-submit');
+  const isEN    = currentLang === 'en';
+  if (!nombre || !email || !mensaje) {
+    status.className = 'form-status err';
+    status.textContent = isEN ? 'Please fill in all fields.' : 'Por favor rellena todos los campos.';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = isEN ? 'Sending…' : 'Enviando…';
+  status.className = 'form-status';
+  try {
+    const res = await fetch('https://formspree.io/f/xbdvgnnd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ nombre, email, mensaje })
+    });
+    if (res.ok) {
+      status.className = 'form-status ok';
+      status.textContent = isEN ? 'Message sent. Thank you.' : 'Mensaje enviado. Gracias.';
+      ['f-nombre','f-email','f-mensaje'].forEach(id => document.getElementById(id).value = '');
+    } else throw new Error();
+  } catch {
+    status.className = 'form-status err';
+    status.textContent = isEN ? 'Something went wrong. Try again.' : 'Algo ha fallado. Inténtalo de nuevo.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = isEN ? 'Send →' : 'Enviar →';
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+  const home = document.getElementById('page-home');
+  void home.offsetWidth;
+  home.classList.add('visible');
+});
+</script>
+</body>
+</html>
